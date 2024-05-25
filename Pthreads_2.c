@@ -1,6 +1,6 @@
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
 
 long long thread_count;
 long long n;
@@ -8,8 +8,8 @@ double sum = 0.0;
 pthread_mutex_t mutex;
 pthread_barrier_t barrier;
 
-void* Thread_sum(void* rank) {
-    long my_rank = (long) rank;
+void *Thread_sum(void *rank) {
+    long my_rank = (long)rank;
     long long i;
     long long my_n = n / thread_count;
     long long my_first_i = my_n * my_rank;
@@ -36,9 +36,9 @@ void* Thread_sum(void* rank) {
     return NULL;
 }
 
-int main(int argc, char* argv[]) {
-    long       thread;
-    pthread_t* thread_handles;
+int main(int argc, char *argv[]) {
+    long thread;
+    pthread_t *thread_handles;
 
     if (argc != 3) {
         fprintf(stderr, "Usage: %s <numero de threads> <n>\n", argv[0]);
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
     pthread_barrier_init(&barrier, NULL, thread_count);
 
     for (thread = 0; thread < thread_count; thread++) {
-        pthread_create(&thread_handles[thread], NULL, Thread_sum, (void) thread);
+        pthread_create(&thread_handles[thread], NULL, Thread_sum, (void *)thread);
     }
 
     for (thread = 0; thread < thread_count; thread++) {
@@ -64,7 +64,8 @@ int main(int argc, char* argv[]) {
     free(thread_handles);
 
     printf("Quantidade de threads: %lld\n", thread_count);
-    printf("Valor de pi calculado: %.15f\n", 4 sum);
+    // Corrigido o uso do operador de multiplicação e formatação correta da impressão
+    printf("Valor de pi calculado: %.15f\n", 4 * sum);
 
     return 0;
 }
